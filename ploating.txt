@@ -1,0 +1,19 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Read recorded sound data from the text file
+sound_data = np.loadtxt('recorded_sound.txt')
+
+# Create time array
+time = np.arange(0, len(sound_data)) / 58000  # Assuming 58 kHz sampling rate
+
+# Plot the recorded sound
+plt.plot(time, sound_data)
+plt.xlabel('Time (seconds)')
+plt.ylabel('Amplitude')
+plt.title('Recorded Sound')
+plt.grid(True)
+
+# Save the plot as an image file
+plt.savefig('recorded_sound_plot.png')
+plt.show()
