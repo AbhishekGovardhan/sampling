@@ -1,0 +1,48 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <cmath>
+
+struct AudioData {
+    std::vector<double> samples;
+    int sampleRate;
+};
+
+AudioData recordAudio(int durationInSeconds, int samplingRate) {
+    int numSamples = durationInSeconds * samplingRate;
+    AudioData audio;
+    audio.sampleRate = samplingRate;
+
+    for (int i = 0; i < numSamples; ++i) {
+        double time = static_cast<double>(i) / samplingRate;
+        double amplitude = std::sin(2 * M_PI * 58000 * time);
+        audio.samples.push_back(amplitude);
+    }
+
+    return audio;
+}
+
+void plotSound(const AudioData& audio) {
+    std::ofstream outFile("recorded_sound.txt");
+    if (!outFile) {
+        std::cerr << "Error: Unable to open file for writing." << std::endl;
+        return;
+    }
+
+    for (double sample : audio.samples) {
+        outFile << sample << std::endl;
+    }
+
+    outFile.close();
+    std::cout << "Recorded sound data saved to 'recorded_sound.txt'. Use plotting software to visualize." << std::endl;
+}
+
+int main() {
+    int durationInSeconds = 4.5;
+    int samplingRate = 58000;
+
+    AudioData recordedAudio = recordAudio(durationInSeconds, samplingRate);
+    plotSound(recordedAudio);
+
+    return 0;
+}
